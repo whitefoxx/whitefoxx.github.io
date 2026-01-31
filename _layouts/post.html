@@ -1,0 +1,91 @@
+---
+layout: default
+---
+
+<div class="row">
+  <div class="col-lg-8">
+    <article class="post-content">
+      <header>
+        <h1>{{ page.title }}</h1>
+        <div class="post-meta">
+          <i class="far fa-calendar-alt"></i> {{ page.date | date: "%B %d, %Y"
+          }} {% if page.author %}
+          <span class="mx-2">|</span>
+          <i class="far fa-user"></i> {{ page.author }} {% endif %} {% if
+          page.tags %}
+          <span class="mx-2">|</span>
+          <i class="fas fa-tags"></i>
+          {% for tag in page.tags %}
+          <span class="tag">{{ tag }}</span>
+          {% endfor %} {% endif %}
+        </div>
+      </header>
+
+      <div class="post-body mt-4">{{ content }}</div>
+
+      <footer class="mt-5 pt-4 border-top">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            {% if page.previous %}
+            <a
+              href="{{ site.baseurl }}{{ page.previous.url }}"
+              class="btn btn-outline-primary"
+            >
+              <i class="fas fa-arrow-left"></i> Previous
+            </a>
+            {% endif %}
+          </div>
+          <div>
+            {% if page.next %}
+            <a
+              href="{{ site.baseurl }}{{ page.next.url }}"
+              class="btn btn-outline-primary"
+            >
+              Next <i class="fas fa-arrow-right"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </footer>
+    </article>
+  </div>
+
+  <div class="col-lg-4">
+    <aside>
+      <!-- About Author -->
+      <div class="sidebar">
+        <h4 class="sidebar-title">About Author</h4>
+        <p class="mb-0">{{ site.description }}</p>
+      </div>
+
+      <!-- Recent Posts -->
+      <div class="sidebar">
+        <h4 class="sidebar-title">Recent Posts</h4>
+        <ul class="sidebar-list">
+          {% for post in site.posts limit: 5 %}
+          <li>
+            <a href="{{ site.baseurl }}{{ post.url }}"> {{ post.title }} </a>
+            <small class="text-muted d-block"
+              >{{ post.date | date: "%b %d, %Y" }}</small
+            >
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Tags -->
+      {% if site.tags %}
+      <div class="sidebar">
+        <h4 class="sidebar-title">Tags</h4>
+        <div>
+          {% for tag in site.tags %}
+          <a href="{{ site.baseurl }}/tags/{{ tag[0] }}/" class="tag"
+            >{{ tag[0] }}</a
+          >
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+</div>

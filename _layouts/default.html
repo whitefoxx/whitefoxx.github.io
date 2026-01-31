@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}
+    </title>
+    <meta
+      name="description"
+      content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --bg-color: #f8fafc;
+        --text-color: #1e293b;
+        --border-color: #e2e8f0;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.7;
+      }
+
+      .navbar {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--primary-color) !important;
+      }
+
+      .nav-link {
+        color: var(--text-color) !important;
+        font-weight: 500;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+      }
+
+      .main-content {
+        padding: 40px 0;
+      }
+
+      .post-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .post-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      }
+
+      .post-title {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .post-title a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .post-title a:hover {
+        color: var(--secondary-color);
+      }
+
+      .post-meta {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+
+      .post-excerpt {
+        color: #475569;
+      }
+
+      .read-more {
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .read-more:hover {
+        color: var(--secondary-color);
+        text-decoration: underline;
+      }
+
+      .sidebar {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+      }
+
+      .sidebar-title {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .sidebar-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar-list li {
+        margin-bottom: 10px;
+      }
+
+      .sidebar-list a {
+        color: var(--text-color);
+        text-decoration: none;
+      }
+
+      .sidebar-list a:hover {
+        color: var(--primary-color);
+      }
+
+      .footer {
+        background-color: white;
+        padding: 40px 0;
+        margin-top: 60px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .tag {
+        display: inline-block;
+        background-color: #dbeafe;
+        color: var(--primary-color);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin: 2px;
+        text-decoration: none;
+      }
+
+      .tag:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      /* Post content styles */
+      .post-content {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .post-content h1,
+      .post-content h2,
+      .post-content h3 {
+        color: var(--text-color);
+        font-weight: 700;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+
+      .post-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .post-content h2 {
+        font-size: 2rem;
+      }
+
+      .post-content h3 {
+        font-size: 1.5rem;
+      }
+
+      .post-content p {
+        margin-bottom: 20px;
+      }
+
+      .post-content code {
+        background-color: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+      }
+
+      .post-content pre {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 20px;
+      }
+
+      .post-content pre code {
+        background-color: transparent;
+        padding: 0;
+        color: inherit;
+      }
+
+      .post-content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 20px;
+        margin: 20px 0;
+        color: #64748b;
+        font-style: italic;
+      }
+
+      .post-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+
+      .post-content ul,
+      .post-content ol {
+        margin-bottom: 20px;
+        padding-left: 30px;
+      }
+
+      .post-content li {
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .post-content {
+          padding: 20px;
+        }
+
+        .post-content h1 {
+          font-size: 2rem;
+        }
+
+        .post-content h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+    {% seo %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.baseurl }}/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ site.baseurl }}/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="https://github.com/{{ site.github_username }}"
+                target="_blank"
+              >
+                <i class="fab fa-github"></i> GitHub
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container main-content">{{ content }}</div>
+
+    <footer class="footer">
+      <div class="container text-center">
+        <p class="mb-0">
+          &copy; {{ site.time | date: "%Y" }} {{ site.author }}. All rights
+          reserved.
+        </p>
+        <p class="mb-0 text-muted">
+          Powered by <a href="https://jekyllrb.com" target="_blank">Jekyll</a> &
+          <a href="https://pages.github.com" target="_blank">GitHub Pages</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

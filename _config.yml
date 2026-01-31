@@ -1,0 +1,46 @@
+# Site settings
+title: My Blog
+description: A personal blog about technology and development
+author: whitefoxx
+email: your-email@example.com
+
+# URL settings
+baseurl: ''
+url: 'https://whitefoxx.github.io'
+
+# Social settings (optional)
+twitter_username: your_twitter
+github_username: whitefoxx
+
+# Build settings
+markdown: kramdown
+theme: minima
+highlighter: rouge
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Pagination (optional)
+paginate: 5
+paginate_path: '/page/:num/'
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# Front matter defaults
+defaults:
+  - scope:
+      path: ''
+      type: 'posts'
+    values:
+      layout: 'post'
+      author: 'whitefoxx'
