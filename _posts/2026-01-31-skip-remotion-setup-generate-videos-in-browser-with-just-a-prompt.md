@@ -7,8 +7,6 @@ tags: [GSAP, SnapDOM, Video Generation, AI, Browser-Based]
 excerpt: 'Learn how to generate professional promo videos in your browser with just a single AI prompt - no installation required.'
 ---
 
-# Skip Remotion Setup: Generate Videos in Browser with Just a Prompt
-
 ## The Remotion Skills Hype
 
 If you've been on X lately, you've probably seen the explosion around **Remotion Agent Skills**. Remotion has integrated with Claude Code to let you generate videos programmatically using AI prompts. It's genuinely impressive, you can create motion graphics, animations, and professional videos just by describing what you want.
@@ -74,7 +72,7 @@ All the technical implementation details are included in the prompt template bel
 
 Copy this entire prompt and paste it into ChatGPT Canvas or Claude Artifacts. Just fill in your product details at the end:
 
-````markdown
+```markdown
 # SaaS Product Promo Animation Generator
 
 Generate a professional kinetic typography promo animation with video recording capability using GSAP, SnapDOM, and Tailwind CSS.
@@ -109,7 +107,7 @@ You MUST ensure all content fits within these bounds:
 
 ### Overflow Prevention
 
-```javascript
+\`\`\`javascript
 // Example: Long text with line breaks
 
 <div class="kinetic-text medium">
@@ -120,15 +118,14 @@ You MUST ensure all content fits within these bounds:
 // Example: Viewport zoom for detailed UI
 .call(() => {
 const { scale, tx, ty } = calculatePrecisionZoom(
-  videoContainer,
-  sceneContainer,
-  document.getElementById('detailedSection'),
-  { desiredScale: 2.0, alignY: 'center' }
+videoContainer,
+sceneContainer,
+document.getElementById('detailedSection'),
+{ desiredScale: 2.0, alignY: 'center' }
 );
 gsap.to(sceneContainer, { x: tx, y: ty, scale: scale, duration: 1.2 });
 }, null, "+=0.2")
-```
-````
+\`\`\`
 
 ## Technical Stack
 
@@ -141,151 +138,151 @@ gsap.to(sceneContainer, { x: tx, y: ty, scale: scale, duration: 1.2 });
 
 ### 1. Resource Management System
 
-```javascript
+\`\`\`javascript
 class ResourcePreloader {
-  constructor() {
-    this.fontsReady = false;
-  }
-  async preloadFonts() {
-    await document.fonts.ready;
-    const fontVariants = [
-      '400 12px Inter',
-      '600 14px Inter',
-      '700 14px Inter',
-      '900 80px Inter',
-    ];
-    await Promise.all(fontVariants.map((font) => document.fonts.load(font)));
-    this.fontsReady = true;
-  }
-  async preloadAll() {
-    await this.preloadFonts();
-  }
-  isReady() {
-    return this.fontsReady;
-  }
+constructor() {
+this.fontsReady = false;
 }
-```
+async preloadFonts() {
+await document.fonts.ready;
+const fontVariants = [
+'400 12px Inter',
+'600 14px Inter',
+'700 14px Inter',
+'900 80px Inter',
+];
+await Promise.all(fontVariants.map((font) => document.fonts.load(font)));
+this.fontsReady = true;
+}
+async preloadAll() {
+await this.preloadFonts();
+}
+isReady() {
+return this.fontsReady;
+}
+}
+\`\`\`
 
 ### 2. Render Synchronization
 
-```javascript
+\`\`\`javascript
 class RenderSyncManager {
-  static forceLayout(element) {
-    void element.offsetHeight;
-    void element.offsetWidth;
-  }
-  static async waitForFrame() {
-    return new Promise((resolve) => requestAnimationFrame(resolve));
-  }
-  static async syncBeforeCapture(element) {
-    this.forceLayout(element);
-    await this.waitForFrame();
-  }
+static forceLayout(element) {
+void element.offsetHeight;
+void element.offsetWidth;
 }
-```
+static async waitForFrame() {
+return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+static async syncBeforeCapture(element) {
+this.forceLayout(element);
+await this.waitForFrame();
+}
+}
+\`\`\`
 
 ### 3. SnapDOM Capture System
 
-```javascript
+\`\`\`javascript
 class SnapDOMCaptureOptimizer {
-  constructor(targetElement, canvas) {
-    this.targetElement = targetElement;
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d', { alpha: false });
-    this.lastCaptureTime = 0;
-    this.capturePromise = Promise.resolve();
-  }
-
-  async capture() {
-    await RenderSyncManager.syncBeforeCapture(this.targetElement);
-    const capturedCanvas = await snapdom.toCanvas(this.targetElement, {
-      width: 854,
-      height: 480,
-      scale: 1,
-      embedFonts: true,
-      cacheBust: false,
-    });
-    this.ctx.clearRect(0, 0, 854, 480);
-    this.ctx.drawImage(capturedCanvas, 0, 0, 854, 480);
-  }
-
-  async captureWithThrottle(fps) {
-    const frameInterval = 1000 / fps;
-    const currentTime = performance.now();
-    if (currentTime - this.lastCaptureTime >= frameInterval) {
-      this.capturePromise = this.capturePromise.then(() => this.capture());
-      this.lastCaptureTime = currentTime;
-    }
-  }
+constructor(targetElement, canvas) {
+this.targetElement = targetElement;
+this.canvas = canvas;
+this.ctx = canvas.getContext('2d', { alpha: false });
+this.lastCaptureTime = 0;
+this.capturePromise = Promise.resolve();
 }
-```
+
+async capture() {
+await RenderSyncManager.syncBeforeCapture(this.targetElement);
+const capturedCanvas = await snapdom.toCanvas(this.targetElement, {
+width: 854,
+height: 480,
+scale: 1,
+embedFonts: true,
+cacheBust: false,
+});
+this.ctx.clearRect(0, 0, 854, 480);
+this.ctx.drawImage(capturedCanvas, 0, 0, 854, 480);
+}
+
+async captureWithThrottle(fps) {
+const frameInterval = 1000 / fps;
+const currentTime = performance.now();
+if (currentTime - this.lastCaptureTime >= frameInterval) {
+this.capturePromise = this.capturePromise.then(() => this.capture());
+this.lastCaptureTime = currentTime;
+}
+}
+}
+\`\`\`
 
 ### 4. State Reset Manager
 
-```javascript
+\`\`\`javascript
 class StateResetManager {
-  static resetAllStates() {
-    gsap.killTweensOf('\*');
-    gsap.set('.scene', {
-      opacity: 0,
-      x: 0,
-      y: 0,
-      scale: 1,
-      rotation: 0,
-      rotationX: 0,
-      filter: 'none',
-      skewX: 0,
-      clearProps: 'all',
-    });
-    gsap.set(sceneContainer, { scale: 1, x: 0, y: 0, clearProps: 'all' });
-    gsap.set(videoContainer, {
-      backgroundColor: '#000',
-      clearProps: 'backgroundColor',
-    });
-    // Reset all animated elements
-  }
+static resetAllStates() {
+gsap.killTweensOf('\*');
+gsap.set('.scene', {
+opacity: 0,
+x: 0,
+y: 0,
+scale: 1,
+rotation: 0,
+rotationX: 0,
+filter: 'none',
+skewX: 0,
+clearProps: 'all',
+});
+gsap.set(sceneContainer, { scale: 1, x: 0, y: 0, clearProps: 'all' });
+gsap.set(videoContainer, {
+backgroundColor: '#000',
+clearProps: 'backgroundColor',
+});
+// Reset all animated elements
 }
-```
+}
+\`\`\`
 
 ### 5. Recording System
 
-```javascript
+\`\`\`javascript
 async function startRecording() {
-  if (!preloader.isReady()) {
-    await preloader.preloadAll();
-  }
-
-  const stream = recordCanvas.captureStream(selectedFPS);
-  const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-    ? 'video/webm;codecs=vp9'
-    : 'video/webm';
-  const bitrate = Math.min(selectedFPS \* 100000, 10000000);
-
-  mediaRecorder = new MediaRecorder(stream, {
-    mimeType: mimeType,
-    videoBitsPerSecond: bitrate
-  });
-
-  mediaRecorder.ondataavailable = (e) => {
-    if (e.data.size > 0) recordedChunks.push(e.data);
-  };
-
-  mediaRecorder.onstop = () => {
-    const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
-    // Auto download
-    const url = URL.createObjectURL(videoBlob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `promo-${selectedFPS}fps-${Date.now()}.webm`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  mediaRecorder.start(100);
-  startSyncCapture();
-  playAnimation(true);
+if (!preloader.isReady()) {
+await preloader.preloadAll();
 }
-```
+
+const stream = recordCanvas.captureStream(selectedFPS);
+const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+? 'video/webm;codecs=vp9'
+: 'video/webm';
+const bitrate = Math.min(selectedFPS \* 100000, 10000000);
+
+mediaRecorder = new MediaRecorder(stream, {
+mimeType: mimeType,
+videoBitsPerSecond: bitrate
+});
+
+mediaRecorder.ondataavailable = (e) => {
+if (e.data.size > 0) recordedChunks.push(e.data);
+};
+
+mediaRecorder.onstop = () => {
+const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+// Auto download
+const url = URL.createObjectURL(videoBlob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `promo-${selectedFPS}fps-${Date.now()}.webm`;
+a.click();
+URL.revokeObjectURL(url);
+};
+
+mediaRecorder.start(100);
+startSyncCapture();
+playAnimation(true);
+}
+\`\`\`
 
 ## Animation Structure
 
@@ -301,29 +298,29 @@ async function startRecording() {
 
 ### GSAP Timeline Structure
 
-```javascript
+\`\`\`javascript
 masterTimeline = gsap.timeline({
-  onUpdate: function() {
-    if (isRecording) {
-      progressFill.style.width = (this.progress() \* 100) + '%';
-    }
-  },
-  onComplete: () => {
-    if (isRecording) {
-      captureOptimizer.capturePromise.then(() => {
-        setTimeout(stopRecording, 500);
-      });
-    }
-  }
+onUpdate: function() {
+if (isRecording) {
+progressFill.style.width = (this.progress() \* 100) + '%';
+}
+},
+onComplete: () => {
+if (isRecording) {
+captureOptimizer.capturePromise.then(() => {
+setTimeout(stopRecording, 500);
+});
+}
+}
 });
 
 // Scene transitions
 masterTimeline
-  .to("#scene1", { opacity: 1, duration: 0.05 })
-  .from("#scene1 .text", { scale: 0.5, y: 80, filter: "blur(15px)", duration: 0.35, ease: "back.out(1.7)" })
-  .to("#scene1", { scale: 1.1, duration: 1.0 })
-  .to("#scene1", { x: -800, skewX: 15, filter: "blur(20px)", opacity: 0, duration: 0.35, ease: "power2.in" });
-```
+.to("#scene1", { opacity: 1, duration: 0.05 })
+.from("#scene1 .text", { scale: 0.5, y: 80, filter: "blur(15px)", duration: 0.35, ease: "back.out(1.7)" })
+.to("#scene1", { scale: 1.1, duration: 1.0 })
+.to("#scene1", { x: -800, skewX: 15, filter: "blur(20px)", opacity: 0, duration: 0.35, ease: "power2.in" });
+\`\`\`
 
 ## 🎨 UI Mockup Requirements
 
@@ -354,7 +351,8 @@ Your UI mockups should look like **actual, production-ready SaaS products**, not
 
 #### Example: Dashboard Mockup
 
-```html
+\`\`\`html
+
 <!-- BAD: Looks fake -->
 <div class="box">
   <div>Title</div>
@@ -382,7 +380,7 @@ Your UI mockups should look like **actual, production-ready SaaS products**, not
     <div class="flex-1 bg-purple-500/60 rounded-t" style="height: 85%"></div>
   </div>
 </div>
-```
+\`\`\`
 
 ### UI Animation Ideas
 
@@ -396,7 +394,8 @@ Your UI mockups should look like **actual, production-ready SaaS products**, not
 
 ## HTML Template Structure
 
-```html
+\`\`\`html
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -517,6 +516,7 @@ Your UI mockups should look like **actual, production-ready SaaS products**, not
         left: -9999px;
       }
     </style>
+
   </head>
   <body>
     <!-- Control Panel -->
@@ -663,9 +663,10 @@ Your UI mockups should look like **actual, production-ready SaaS products**, not
         await preloader.preloadAll();
       });
     </script>
+
   </body>
 </html>
-```
+\`\`\`
 
 ## Design Guidelines
 
@@ -740,7 +741,6 @@ Customize:
 ## Product Description
 
 [YOUR PRODUCT DESCRIPTION GOES HERE]
-
 ```
 
 ## Try It Yourself
@@ -768,4 +768,3 @@ If you try this out, I'd love to see what you create! Drop a link in the comment
 ---
 
 **Found this useful?** Share this post with a founder friend who needs a quick promo video for their next launch.
-```

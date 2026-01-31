@@ -7,8 +7,6 @@ tags: [Jekyll, GitHub Pages, Blogging, Web Development]
 excerpt: 'A comprehensive step-by-step guide to setting up your own Jekyll blog on GitHub Pages, including how to add new posts and best practices.'
 ---
 
-# How to Set Up a Jekyll Blog on GitHub Pages: Complete Guide
-
 Welcome to this complete guide on setting up your own blog using Jekyll and GitHub Pages! This tutorial will walk you through everything you need to know, from initial setup to adding new content.
 
 ## What is Jekyll?
