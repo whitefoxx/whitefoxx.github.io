@@ -14,13 +14,7 @@ github_username: whitefoxx
 
 # Build settings
 markdown: kramdown
-theme: minima
 highlighter: rouge
-
-# Plugins
-plugins:
-  - jekyll-seo-tag
-  - jekyll-sitemap
 
 # Pagination (optional)
 paginate: 5
